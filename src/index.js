@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -54,3 +54,14 @@ addCityForm.addEventListener('submit', (e) => {
     // }).then(() => addCityForm.reset());
 });
 
+// suppression d'un document 
+
+const deleteCityForm = document.querySelector('.suppression');
+
+deleteCityForm.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const docRef = doc(dataBase, "Villes", deleteCityForm.id.value)
+
+    deleteDoc(docRef).then(()=> deleteCityForm.reset())
+})
