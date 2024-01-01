@@ -25,6 +25,101 @@ getDocs(citiesRef).then((snapshot) => {
    // recuperer les donnees
 })
 
+
+//Ajouter un dataset dans BK collection "Villes"
+Promise.all([
+  setDoc(doc(citiesRef, "KIN"), {
+    pays: "Rd Congo",
+    ville: "Kinshasa",
+    capitale: true,
+    dateDajout: new Date("Jul 1, 2022"),
+    population: 15000000,
+    communes: [
+      "Gombe",
+      "Bandale",
+      "Kinshasa",
+      "LingwaBK",
+      "Limete",
+      "Ngaliema",
+    ],
+  }),
+  setDoc(doc(citiesRef, "BK"), {
+    pays: "Rd Congo",
+    ville: "Bukavu",
+    capitale: false,
+    dateDajout: new Date("Jul 6, 2022"),
+    population: 2000000,
+    communes: ["Ibanda", "Kadutu", "Bagira"],
+  }),
+  setDoc(doc(citiesRef, "DEGO"), {
+    pays: "Rd Congo",
+    ville: "Goma",
+    capitale: false,
+    dateDajout: new Date("Jul 9, 2022"),
+    population: 1000000,
+    communes: ["Goma", "Karisimbi"],
+  }),
+  setDoc(doc(citiesRef, "BJ"), {
+    pays: "Burundi",
+    ville: "Bujumbura",
+    capitale: false,
+    dateDajout: new Date("Jul 15, 2022"),
+    population: 1500000,
+    communes: ["Ntahangwa", "Mukazi", "Muha"],
+  }),
+  setDoc(doc(citiesRef, "GTG"), {
+    pays: "Burundi",
+    ville: "Gitega",
+    capitale: true,
+    dateDajout: new Date("Jul 17, 2022"),
+    population: 130000,
+    communes: ["Magara", "Nyamugari", "Rutonde"],
+  }),
+  setDoc(doc(citiesRef, "KGL"), {
+    pays: "Rwanda",
+    ville: "Kigali",
+    capitale: true,
+    dateDajout: new Date("Jul 28, 2022"),
+    population: 1500000,
+    communes: ["Gasabo", "Kicukiro", "Nyarugenge"],
+  }),
+  setDoc(doc(citiesRef, "GSG"), {
+    pays: "Rwanda",
+    ville: "Gisenyi",
+    capitale: false,
+    dateDajout: new Date("Jul 18, 2022"),
+    population: 160000,
+    communes: ["Kibuye", "Cyangugu"],
+  }),
+  setDoc(doc(citiesRef, "NBO"), {
+    pays: "Kenya",
+    ville: "Nairobi",
+    capitale: true,
+    dateDajout: new Date("Jul 10, 2022"),
+    population: 4000000,
+    communes: [
+      "WestBKnds",
+      "Dagoretti",
+      "BKngata",
+      "Kamukunji",
+      "Embakasi",
+      "Njiru",
+      "Kakadara",
+    ],
+  }),
+  setDoc(doc(citiesRef, "MBS"), {
+    pays: "Kenya",
+    ville: "Mombasa",
+    capitale: false,
+    dateDajout: new Date("Jul 3, 2022"),
+    population: 120800,
+    communes: ["Changwaniwe", "Kisauni", "Koni", "Lokini"],
+  }),
+])
+  .then(() => console.log("Données 'Villes' ajoutées avec succès"))
+  .catch((error) => console.log(error.message));
+
+
 onSnapshot(citiesRef, (snapshot) => {
      let villes = [];
     snapshot.docs.forEach((doc) => {
