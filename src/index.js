@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore, serverTimestamp } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -34,7 +34,15 @@ addCityForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // ajouter un document avec un id generer
-    addDoc(citiesRef, {
+    // addDoc(citiesRef, {
+    //     pays: addCityForm.pays.value,
+    //     ville: addCityForm.ville.value,
+    //     capital: addCityForm.capital.value === 'true' ? true : false,
+    //     dateDajout: serverTimestamp()
+    // }).then(() => addCityForm.reset());
+
+    // ajouter un doc avec un id personaliser
+    setDoc(doc(dataBase, "Villes", "NIG"), {
         pays: addCityForm.pays.value,
         ville: addCityForm.ville.value,
         capital: addCityForm.capital.value === 'true' ? true : false,
