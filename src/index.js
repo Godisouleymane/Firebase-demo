@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getFirestore } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, serverTimestamp } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -17,7 +17,9 @@ const app = initializeApp(firebaseConfig);
 // initialisation des services firestore
 const dataBase = getFirestore(app);
 
-const utilisateurs = collection(dataBase, 'utilisateurs')
+const utilisateurs = collection(dataBase, 'utilisateurs');
+
+const citiesRef = collection(dataBase, 'Villes');
 
 getDocs(utilisateurs).then((snapshot) => {
     let utilisateurs = [];
@@ -27,3 +29,15 @@ getDocs(utilisateurs).then((snapshot) => {
     console.log(utilisateurs);
 })
 
+const addCityForm = document.querySelector(".ajouter");
+addCityForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // ajouter un document avec un id generer
+    addDoc(citiesRef, {
+        pays: addCityForm.pays.value,
+        ville: addCityForm.ville.value,
+        capital: addCityForm.capital.value === 'true' ? true : false,
+        dateDajout: serverTimestamp()
+    }).then(() => addCityForm.reset());
+})
