@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -25,74 +25,30 @@ getDocs(citiesRef).then((snapshot) => {
    // recuperer les donnees
 })
 
-//Ajouter un dataset dans BK sous-collection "habitants"
-Promise.all([
-  addDoc(collection(citiesRef, "KIN", "habitants"), {
-    noms: "Patrick Bashizi",
-    age: "35 ans",
-    sexe: "M",
-  }),
-  addDoc(collection(citiesRef, "KIN", "habitants"), {
-    noms: "Odette Kavira",
-    age: "32 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "BK", "habitants"), {
-    noms: "Alain Cisirika",
-    age: "27 ans",
-    sexe: "M",
-  }),
-  addDoc(collection(citiesRef, "BK", "habitants"), {
-    noms: "Josephine Romana",
-    age: "22 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "DEGO", "habitants"), {
-    noms: "Lens Mutombo",
-    age: "30 ans",
-    sexe: "M",
-  }),
-  addDoc(collection(citiesRef, "DEGO", "habitants"), {
-    noms: "Josephine Ndeze",
-    age: "23 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "BJ", "habitants"), {
-    noms: "Jean Lionel",
-    age: "28 ans",
-    sexe: "M",
-  }),
-  addDoc(collection(citiesRef, "GTG", "habitants"), {
-    noms: "Chouella Kayonga",
-    age: "23 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "KGL", "habitants"), {
-    noms: "Cynthia React",
-    age: "24 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "GSG", "habitants"), {
-    noms: "Esther Android",
-    age: "26 ans",
-    sexe: "M",
-  }),
-  addDoc(collection(citiesRef, "NBO", "habitants"), {
-    noms: "Tabitha CrowSource",
-    age: "29 ans",
-    sexe: "F",
-  }),
-  addDoc(collection(citiesRef, "MBS", "habitants"), {
-    noms: "Wayne Angular",
-    age: "30 ans",
-    sexe: "M",
-  }),
-])
-  .then(() => console.log("Données 'habitants' ajoutées avec succès"))
-  .catch((error) => console.log(error.message));
+// recuperer les villes de Rd Congo
+const q1 = query(citiesRef, where('pays', '==', "Rd Congo"));
 
+// Recuperer toutes les villes sauf celles de la RDc
 
-onSnapshot(citiesRef, (snapshot) => {
+const q2 = query(citiesRef, where('pays', '!=', 'Rd Congo'));
+
+// Recuperer seulement les villes de la Rd Congo et celles de Rwanda;
+
+const q3 = query(citiesRef, where('pays', 'in', ["Rd Congo", "Rwanda"]));
+
+// Recuperer toutes les villes sauf Bujmbura, gisenyi, Goma,
+
+const q4 = query(citiesRef, where('ville', 'not-in', ['Bujumbura', 'Gisenyi', 'Goma']));
+
+// recuperer les villes dont la popolation est superieur a 1M
+
+const q5 = query(citiesRef, where('population', '>', 1000000))
+
+// Recuperer toutes les villes ajoutees entre le 10 et le 30 juillet 2022, et arragez les selon l'ordre decroissant
+
+const q6 = query(citiesRef, where('dateDajout', '>', new Date('Jul 10, 2022'), '<', new Date('Jul 30, 2022')), orderBy('dateDajout', 'desc'));
+
+onSnapshot(q6, (snapshot) => {
      let villes = [];
     snapshot.docs.forEach((doc) => {
         villes.push({ ...doc.data(), id: doc.id })
