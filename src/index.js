@@ -60,9 +60,10 @@ const q8 = query(citiesRef, where('communes', 'array-contains-any', ['Nyarugenge
 
 const q9 = query(citiesRef, orderBy('dateDajout', 'desc'), limit(3));
 
-// 
+// Recuperer toutes les villes de la Rd congo dont la population est inferieur a 3M
+const q10 = query(citiesRef, where('pays', '==', 'Rd Congo'), where('population', '<', 3000000))
 
-onSnapshot(q9, (snapshot) => {
+onSnapshot(q10, (snapshot) => {
      let villes = [];
     snapshot.docs.forEach((doc) => {
         villes.push({ ...doc.data(), id: doc.id })
@@ -114,3 +115,4 @@ updateCityForm.addEventListener('click', (e) => {
 
     updateDoc(docRef, {ville: "La ville a jour"}).then(()=> updateCityForm.reset())
 })
+
