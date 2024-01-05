@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -48,7 +48,21 @@ const q5 = query(citiesRef, where('population', '>', 1000000))
 
 const q6 = query(citiesRef, where('dateDajout', '>', new Date('Jul 10, 2022'), '<', new Date('Jul 30, 2022')), orderBy('dateDajout', 'desc'));
 
-onSnapshot(q6, (snapshot) => {
+// Recuperer la ville avec comme commune Nyarugenge;
+
+const q7 = query(citiesRef, where('communes', 'array-contains', 'Nyarugenge'));
+
+// Recuperer les villes avec comme commune Nyarugenge, Bandale, Cyangugu, Ibanda
+
+const q8 = query(citiesRef, where('communes', 'array-contains-any', ['Nyarugenge', 'Bandale', 'Cyangugu', 'Ibanda']));
+
+// Recuperer les trois dernieres villes recememnt ajoutees
+
+const q9 = query(citiesRef, orderBy('dateDajout', 'desc'), limit(3));
+
+// 
+
+onSnapshot(q9, (snapshot) => {
      let villes = [];
     snapshot.docs.forEach((doc) => {
         villes.push({ ...doc.data(), id: doc.id })
