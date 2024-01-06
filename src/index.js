@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -145,3 +145,11 @@ signInGoogleBtn.addEventListener('click', ()=> {
 onAuthStateChanged(auth, (user)=> {
   console.log("Changement du status de l'utilisateur:", user);
 });
+
+// De connexion de l'utilisateur 
+
+const logoutBtn = document.querySelector('.logout');
+
+logoutBtn.addEventListener('click', ()=> {
+  signOut(auth).then(()=> console.log("Utilisateur deconnecter")).catch((err) => console.log(err));
+})
