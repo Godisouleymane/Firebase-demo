@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
-import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -139,3 +139,9 @@ const signInGoogleBtn = document.querySelector('.googleLogin');
 signInGoogleBtn.addEventListener('click', ()=> {
   signInWithRedirect(auth, new GoogleAuthProvider())
 })
+
+// Souscription a l'Etat de la connexion de l'utilisateur;
+
+onAuthStateChanged(auth, (user)=> {
+  console.log("Changement du status de l'utilisateur:", user);
+});
