@@ -66,17 +66,19 @@ const q10 = query(citiesRef, where('pays', '==', 'Rd Congo'), where('population'
 // => Requetes de groupe des collections;
 // Reference de la sous-collection(NB : ID unique pour les sous-collection)
 const habitantsRef = collectionGroup(dataBase, 'habitants');
-
-
+  
 // recuperer tout les habitants disponible;
 
 const q11 = query(habitantsRef);
 
+// Recuperer les habitants feminins;
 
-onSnapshot(q11, (snapshot) => {
+const q12 = query(habitantsRef, where('sexe', '==', 'f'));
+
+onSnapshot(q12, (snapshot) => {
      let villes = [];
     snapshot.docs.forEach((doc) => {
-        villes.push({ ...doc.data(), id: doc.id })
+        villes.push({ ...doc.data(), id: doc.id });
     });
     console.log(villes);
 })
