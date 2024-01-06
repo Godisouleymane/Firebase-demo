@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
+import { GoogleAuthProvider, getAuth, signInWithRedirect } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -16,6 +17,8 @@ const app = initializeApp(firebaseConfig);
 
 // initialisation des services firestore
 const dataBase = getFirestore(app);
+
+const auth = getAuth(app);
 
 const utilisateurs = collection(dataBase, 'utilisateurs');
 
@@ -126,5 +129,13 @@ updateCityForm.addEventListener('click', (e) => {
     const docRef = doc(dataBase, "Villes", updateCityForm.id.value)
 
     updateDoc(docRef, {ville: "La ville a jour"}).then(()=> updateCityForm.reset())
-})
+});
 
+
+// Se connecter avec un compte google;
+
+const signInGoogleBtn = document.querySelector('.googleLogin');
+
+signInGoogleBtn.addEventListener('click', ()=> {
+  signInWithRedirect(auth, new GoogleAuthProvider())
+})
