@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, signOut } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithRedirect, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -152,4 +152,24 @@ const logoutBtn = document.querySelector('.logout');
 
 logoutBtn.addEventListener('click', ()=> {
   signOut(auth).then(()=> console.log("Utilisateur deconnecter")).catch((err) => console.log(err));
+});
+
+
+// Inscription de l'utilisateur;
+
+const signUpForm = document.querySelector('.signup');
+
+
+signUpForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = signUpForm.email.value;
+  const password = signUpForm.password.value;
+
+  createUserWithEmailAndPassword(auth, email, password).then((cred)=> {
+    console.log("L'utilisateur est connecté", cred.user);
+    signUpForm.reset();
+  }).catch((err)=> {
+    console.log(err.message);
+  })
 })
