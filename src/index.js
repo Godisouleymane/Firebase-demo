@@ -167,8 +167,27 @@ signUpForm.addEventListener('submit', (e) => {
   const password = signUpForm.password.value;
 
   createUserWithEmailAndPassword(auth, email, password).then((cred)=> {
-    console.log("L'utilisateur est connecté", cred.user);
+    console.log("L'utilisateur inscrit", cred.user);
     signUpForm.reset();
+  }).catch((err)=> {
+    console.log(err.message);
+  })
+})
+
+
+// Connectez l'utilisateur 
+
+const loginForm = document.querySelector('.login');
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+
+  signInWithEmailAndPassword(auth, email, password).then((cred)=> {
+    console.log("L'utilisateur connecté", cred.user);
+    loginForm.reset();
   }).catch((err)=> {
     console.log(err.message);
   })
