@@ -17,8 +17,10 @@ const app = initializeApp(firebaseConfig);
 
 // initialisation des services firestore
 const dataBase = getFirestore(app);
-
 const auth = getAuth(app);
+
+// Enregistrement des donnees de l'utilisateur
+
 
 
 // Se connecter avec un compte google;
@@ -141,7 +143,6 @@ onAuthStateChanged(auth, (user) => {
 
 // De connexion de l'utilisateur 
 const logoutBtn = document.querySelector('.logoutBtn');
-
 logoutBtn.addEventListener('click', () => {
   signOut(auth)
 });
