@@ -21,7 +21,10 @@ const auth = getAuth(app);
 
 // Enregistrement des donnees de l'utilisateur
 
-
+const newUser = ({email, uid}) => {
+  const userRef = doc(dataBase, 'utilisateur', uid);
+  setDoc(userRef, {email, uid}, {merge: true})
+}
 
 // Se connecter avec un compte google;
 
