@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
-import { ActionCodeOperation, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signInWithRedirect, signOut } from 'firebase/auth';
+import { ActionCodeOperation, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, isSignInWithEmailLink, linkWithRedirect, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signInWithRedirect, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -232,3 +232,12 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
     console.log(err.message);
   })
 }
+
+// Lier le compte avec un compte google
+
+const linkWithGoogleBtn = document.querySelector('.linkAccount');
+
+linkWithGoogleBtn.addEventListener('click', ()=> {
+  linkWithRedirect(auth.currentUser, new GoogleAuthProvider());
+});
+
