@@ -226,18 +226,21 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
     email = window.prompt('Veuillez, Entrez votre email pour la confirmation')
   }
   signInWithEmailLink(auth, email, window.location.href).then(()=> {
-    console.log("Connecter avec success");
     window.localStorage.removeItem('emailForSign')
+
+    // Lier les comptes
+    linkWithRedirect(auth.currentUser, new GoogleAuthProvider());
   }).catch((err)=> {
     console.log(err.message);
   })
 }
 
-// Lier le compte avec un compte google
 
-const linkWithGoogleBtn = document.querySelector('.linkAccount');
+// Le changement d'etat de l'interface (connexion / deconnexion);
 
-linkWithGoogleBtn.addEventListener('click', ()=> {
-  linkWithRedirect(auth.currentUser, new GoogleAuthProvider());
-});
-
+const isLoginToolbar = document.querySelector('.isLogin-toolbar');
+const isLoginHome = document.querySelector('.isLogin-home');
+const isLogOut = document.querySelector('.isLogOut');
+isLoginToolbar.style.display = "none";
+isLoginHome.style.display = "none";
+isLogOut.style.display = "none";
