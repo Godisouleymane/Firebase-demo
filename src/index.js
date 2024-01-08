@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, getDocs, getFirestore, serverTimestamp, setDoc, doc, onSnapshot, deleteDoc, updateDoc, query, where, orderBy, limit, collectionGroup } from 'firebase/firestore'
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithRedirect, signOut } from 'firebase/auth';
+import { ActionCodeOperation, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink, signInWithRedirect, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBkRg4J8MfDU6albnKxcsiuo0Jfw7oDiMw",
@@ -155,40 +155,80 @@ logoutBtn.addEventListener('click', ()=> {
 });
 
 
-// Inscription de l'utilisateur;
+// // Inscription de l'utilisateur;
 
-const signUpForm = document.querySelector('.signup');
+// const signUpForm = document.querySelector('.signup');
 
 
-signUpForm.addEventListener('submit', (e) => {
+// signUpForm.addEventListener('submit', (e) => {
+//   e.preventDefault();
+
+//   const email = signUpForm.email.value;
+//   const password = signUpForm.password.value;
+
+//   createUserWithEmailAndPassword(auth, email, password).then((cred)=> {
+//     console.log("L'utilisateur inscrit", cred.user);
+//     signUpForm.reset();
+//   }).catch((err)=> {
+//     console.log(err.message);
+//   })
+// })
+
+
+// // Connectez l'utilisateur 
+
+// const loginForm = document.querySelector('.login');
+
+// loginForm.addEventListener('submit', (e) => {
+//   e.preventDefault();
+
+//   const email = loginForm.email.value;
+//   const password = loginForm.password.value;
+
+//   signInWithEmailAndPassword(auth, email, password).then((cred)=> {
+//     console.log("L'utilisateur connecté", cred.user);
+//     loginForm.reset();
+//   }).catch((err)=> {
+//     console.log(err.message);
+//   })
+// })
+
+
+// Authentification sans mot de passe (avec le lien email);
+
+const passwordLessForm = document.querySelector('.passwordless')
+
+passwordLessForm.addEventListener('submit', (e)=> {
   e.preventDefault();
 
-  const email = signUpForm.email.value;
-  const password = signUpForm.password.value;
+  const email = passwordLessForm.email.value;
 
-  createUserWithEmailAndPassword(auth, email, password).then((cred)=> {
-    console.log("L'utilisateur inscrit", cred.user);
-    signUpForm.reset();
+  const actionCodeSettings = {
+    url: "http://localhost:5500/dist/index.html",
+    handleCodeInApp: true,
+  }
+  
+  sendSignInLinkToEmail(auth, email, actionCodeSettings)
+  .then(()=> {
+    window.localStorage.setItem('emailForSign', email);
+    console.log("mail envoyé a l'adresse fourni");
+    passwordLessForm.reset();
   }).catch((err)=> {
     console.log(err.message);
   })
-})
+});
 
 
-// Connectez l'utilisateur 
+if (isSignInWithEmailLink(auth, window.location.href)) {
+  let email = window.localStorage.getItem("emailForSign");
 
-const loginForm = document.querySelector('.login');
-
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const email = loginForm.email.value;
-  const password = loginForm.password.value;
-
-  signInWithEmailAndPassword(auth, email, password).then((cred)=> {
-    console.log("L'utilisateur connecté", cred.user);
-    loginForm.reset();
+  if (email == false) {
+    email = window.prompt('Veuillez, Entrez votre email pour la confirmation')
+  }
+  signInWithEmailLink(auth, email, window.location.href).then(()=> {
+    console.log("Connecter avec success");
+    window.localStorage.removeItem('emailForSign')
   }).catch((err)=> {
     console.log(err.message);
   })
-})
+}
